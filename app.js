@@ -27,7 +27,7 @@ app.get('/products/:pid', async (req, res) => {
     const producto = await productManager.obtenerProductoPorId(productId);
 
     if (!producto) {
-      return res.status(404).json({ error: 'Producto no encontrado' });
+      return res.status(404).json({ error: 'El producto no existe' });
     }
 
     return res.json(producto);
@@ -36,7 +36,7 @@ app.get('/products/:pid', async (req, res) => {
   }
 });
 
-const PORT = 3000; 
+const PORT = 8080; 
 app.listen(PORT, () => {
   console.log(`Servidor Express corriendo en el puerto ${PORT}`);
 });
