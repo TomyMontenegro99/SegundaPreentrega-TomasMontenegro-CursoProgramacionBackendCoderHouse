@@ -1,10 +1,12 @@
 const fs = require('fs');
 
 class ProductManager {
-  constructor(rutaArchivo) {
-    this.path = rutaArchivo;
+  constructor(rutaArchivoProductos, rutaArchivoCarritos) {
+    this.pathProductos = rutaArchivoProductos;
+    this.pathCarritos = rutaArchivoCarritos;
   }
 
+  // Métodos para productos
   agregarProducto(producto) {
     const productos = this.obtenerProductos();
     producto.id = this.generarIdUnico(productos);
@@ -14,7 +16,7 @@ class ProductManager {
 
   obtenerProductos() {
     try {
-      const datos = fs.readFileSync(this.path, 'utf-8');
+      const datos = fs.readFileSync(this.pathProductos, 'utf-8');
       return JSON.parse(datos);
     } catch (error) {
       return [];
@@ -30,17 +32,17 @@ class ProductManager {
   actualizarProducto(id, productoActualizado) {
     const productos = this.obtenerProductos();
     const indice = productos.findIndex((p) => p.id === id);
-
+  
     if (indice !== -1) {
       productos[indice] = { ...productos[indice], ...productoActualizado };
-      this.guardarProductos(productos);
+      this.guardarProductos(productos); // Guardar los productos actualizados
     }
   }
 
   eliminarProducto(id) {
-    const productos = this.obtenerProductos();
-    const productosActualizados = productos.filter((p) => p.id !== id);
-    this.guardarProductos(productosActualizados);
+    let productos = this.obtenerProductos();
+    productos = productos.filter((p) => p.id !== id);
+    this.guardarProductos(productos);
   }
 
   generarIdUnico(productos) {
@@ -48,39 +50,78 @@ class ProductManager {
   }
 
   guardarProductos(productos) {
-    const datos = JSON.stringify(productos, null, 2);
-    fs.writeFileSync(this.path, datos, 'utf-8');
+    try {
+      fs.writeFileSync(this.pathProductos, JSON.stringify(productos, null, 2), 'utf-8');
+    } catch (error) {
+      console.error('Error al guardar los productos:', error);
+    }
+  }
+  
+  
+
+  // Métodos para carritos
+  crearCarrito() {
+    const carrito = {
+      id: this.generarIdUnicoCarrito(),
+      products: []
+    };
+    this.guardarCarrito(carrito);
+    return carrito;
+  }
+
+  agregarProductoAlCarrito(carritoId, productId) {
+    const carrito = this.obtenerCarritoPorId(carritoId);
+    if (!carrito) return false;
+
+    carrito.products.push(productId);
+    this.guardarCarrito(carrito);
+    return true;
+  }
+
+  obtenerProductosDelCarrito(carritoId) {
+    const carrito = this.obtenerCarritoPorId(carritoId);
+    if (!carrito) return [];
+
+    const productos = [];
+    for (const productId of carrito.products) {
+      const producto = this.obtenerProductoPorId(productId);
+      if (producto) {
+        productos.push(producto);
+      }
+    }
+    return productos;
+  }
+
+  obtenerCarritoPorId(carritoId) {
+    try {
+      const datos = fs.readFileSync(this.pathCarritos, 'utf-8');
+      const carritos = JSON.parse(datos);
+      return carritos.find((c) => c.id === carritoId);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  guardarCarrito(carrito) {
+    try {
+      const datos = fs.readFileSync(this.pathCarritos, 'utf-8');
+      const carritos = JSON.parse(datos);
+      carritos.push(carrito);
+      fs.writeFileSync(this.pathCarritos, JSON.stringify(carritos, null, 2), 'utf-8');
+    } catch (error) {
+      fs.writeFileSync(this.pathCarritos, JSON.stringify([carrito], null, 2), 'utf-8');
+    }
+  }
+
+  generarIdUnicoCarrito() {
+    try {
+      const datos = fs.readFileSync(this.pathCarritos, 'utf-8');
+      const carritos = JSON.parse(datos);
+      return carritos.length > 0 ? Math.max(...carritos.map((c) => c.id)) + 1 : 1;
+    } catch (error) {
+      return 1;
+    }
   }
 }
 
-
 module.exports = ProductManager;
-
-// Ejemplo de uso:
-const rutaArchivo = 'productos.json'; 
-const gestorDeProductos = new ProductManager(rutaArchivo);
-
-// Agregar un producto
-gestorDeProductos.agregarProducto({
-  title: 'Producto 1',
-  description: 'Descripción 1',
-  price: 19.99,
-  thumbnail: 'imagen1.jpg',
-  code: 'P1',
-  stock: 10,
-});
-
-// Consultar productos
-console.log(gestorDeProductos.obtenerProductos());
-
-// Obtener producto por ID
-console.log(gestorDeProductos.obtenerProductoPorId(1));
-
-// Actualizar producto por ID
-gestorDeProductos.actualizarProducto(1, { price: 29.99, stock: 15 });
-
-// Eliminar producto por ID
-gestorDeProductos.eliminarProducto(1);
-
-// Consultar productos después de la actualización y eliminación
-console.log(gestorDeProductos.obtenerProductos());
