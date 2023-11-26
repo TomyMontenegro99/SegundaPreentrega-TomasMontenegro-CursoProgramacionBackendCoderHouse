@@ -18,11 +18,17 @@ class CartManager {
 
   async crearCarrito(nuevoCarrito) {
     try {
+      let carritos = [];
       const datos = await fs.readFile(this.path, 'utf-8');
-      const carritos = JSON.parse(datos);
+      
+      if (datos) {
+        carritos = JSON.parse(datos);
+      }
+  
       const id = Math.floor(Math.random() * 1000);
       const carrito = { id, ...nuevoCarrito, products: [] };
       carritos.push(carrito);
+  
       await fs.writeFile(this.path, JSON.stringify(carritos, null, 2), 'utf-8');
       return carrito;
     } catch (error) {
