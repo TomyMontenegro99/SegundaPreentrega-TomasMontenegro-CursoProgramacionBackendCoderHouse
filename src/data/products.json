@@ -1,0 +1,135 @@
+[
+  {
+    "id": 1,
+    "title": "iphone",
+    "description": "nuevo iphone ",
+    "price": "1233",
+    "thumbnails": [
+      "https://d2ihpvt6nd5q28.cloudfront.net/wp-content/uploads/2023/02/iPhone_14_Midnight_PDP_Image_Position-1A_LAES.jpg"
+    ],
+    "code": "12",
+    "stock": "1",
+    "status": true,
+    "category": "tecnologia"
+  },
+  {
+    "id": 2,
+    "title": "iphone 2",
+    "description": "nuevo iphone ",
+    "price": "1233",
+    "thumbnails": [
+      "https://http2.mlstatic.com/D_NQ_NP_864844-MLM51559388062_092022-O.webp"
+    ],
+    "code": "12",
+    "stock": "1",
+    "status": true,
+    "category": "tecnologia"
+  },
+
+    {
+      "id": 3,
+      "title": "Samsung Galaxy S21",
+      "description": "Potente smartphone de Samsung",
+      "price": "999",
+      "thumbnails": [
+        "https://www.movilzona.es/app/uploads/2021/01/Samsung-Galaxy-S21-Ultra-Mockup.jpg"
+      ],
+      "code": "S21",
+      "stock": "5",
+      "status": true,
+      "category": "tecnologia"
+    },
+    {
+      "id": 4,
+      "title": "Macbook Pro",
+      "description": "Portátil potente y versátil de Apple",
+      "price": "1999",
+      "thumbnails": [
+        "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp-spacegray-select-202011?wid=904&hei=840&fmt=jpeg&qlt=80&.v=1613672894000"
+      ],
+      "code": "MBP2022",
+      "stock": "3",
+      "status": true,
+      "category": "tecnologia"
+    },
+    {
+      "id": 5,
+      "title": "Cámara Canon EOS R5",
+      "description": "Cámara profesional de Canon",
+      "price": "3899",
+      "thumbnails": [
+        "https://www.canon.es/media/canon-eos-r5-body_tcm13-1831539.png"
+      ],
+      "code": "R5",
+      "stock": "2",
+      "status": true,
+      "category": "fotografia"
+    },
+    {
+      "id": 6,
+      "title": "Xbox Series X",
+      "description": "Consola de videojuegos de Microsoft",
+      "price": "499",
+      "thumbnails": [
+        "https://compass-ssl.xbox.com/assets/e9/79/e979e55d-505e-4a3b-8b34-2b07d6cc8577.jpg?n=XBX_1_2021_LP.jpg"
+      ],
+      "code": "XSX",
+      "stock": "7",
+      "status": true,
+      "category": "videojuegos"
+    },
+    {
+      "id": 7,
+      "title": "Smart TV Samsung 4K",
+      "description": "Televisor inteligente con resolución 4K",
+      "price": "799",
+      "thumbnails": [
+        "https://images.samsung.com/is/image/samsung/latin-fhd-t5300-ua50t5300agxpe-frontblack-229833078?$720_576_PNG$"
+      ],
+      "code": "TV4K",
+      "stock": "4",
+      "status": true,
+      "category": "tecnologia"
+    },
+    {
+      "id": 8,
+      "title": "PlayStation 5",
+      "description": "Consola de videojuegos de Sony",
+      "price": "499",
+      "thumbnails": [
+        "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6426/6426149_sd.jpg;maxHeight=640;maxWidth=550"
+      ],
+      "code": "PS5",
+      "stock": "6",
+      "status": true,
+      "category": "videojuegos"
+    },
+    {
+      "id": 9,
+      "title": "Apple Watch Series 7",
+      "description": "Reloj inteligente de Apple",
+      "price": "399",
+      "thumbnails": [
+        "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/apple-watch-s7-select-202109?wid=2000&hei=2000&fmt=jpeg&qlt=80&.v=1631108642000"
+      ],
+      "code": "AW7",
+      "stock": "4",
+      "status": true,
+      "category": "tecnologia"
+    },
+    {
+      "id": 10,
+      "title": "Nintendo Switch",
+      "description": "Consola híbrida de Nintendo",
+      "price": "299",
+      "thumbnails": [
+        "https://images-na.ssl-images-amazon.com/images/I/71ivrWiYfzL._AC_SL1500_.jpg"
+      ],
+      "code": "NS",
+      "stock": "8",
+      "status": true,
+      "category": "videojuegos"
+    }
+  
+  
+]

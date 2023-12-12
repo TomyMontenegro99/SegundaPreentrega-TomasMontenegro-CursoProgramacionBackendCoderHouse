@@ -1,45 +1,71 @@
-console.log("realTime js loaded");
 const socket = io();
 
-const form = document.getElementById("form");
-
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const title = form.elements.title.value;
-  const description = form.elements.description.value;
-  const price = form.elements.price.value;
-  const thumbnail = form.elements.thumbnail.value;
-  const code = form.elements.code.value;
-  const stock = form.elements.stock.value;
-  const category = form.elements.category.value;
-
-  const newProduct = {
-    title,
-    description,
-    price,
-    thumbnail,
-    code,
-    stock,
-    category,
-  };
-  console.log(newProduct);
-  socket.emit("new-product", newProduct);
-  form.reset();
+socket.on("update-products", (data) => {
+  const productsList = document.getElementById("products");
+  productsList.innerHTML = "";
+  data.forEach((product) => {
+    productsList.innerHTML += `
+        <li>
+        ${product.title}
+        <button onclick="removeProduct(${product.id})">Remove</button>
+        </li>
+        `;
+  });
 });
 
-socket.on("refresh-products", (data) => {
-  console.log("refresh-products", data);
-  window.location.reload();
-});
-
-function deleteProduct(id) {
+const removeProduct = (id) => {
+  // call DELETE/api/products/:id endpoint
   fetch(`/api/products/${id}`, {
     method: "DELETE",
   })
-    .then((res) => res.json())
+    .then((response) => response.json())
     .then((data) => {
-      console.log(data);
-      window.location.reload();
+      console.log("Success:", data);
+      if (data.status === "error") {
+        alert(data.message);
+      }
     })
-    .catch((err) => console.log(err));
-}
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+};
+
+const addProduct = () => {
+  const title = document.getElementById("title").value;
+  const description = document.getElementById("description").value;
+  const price = document.getElementById("price").value;
+  const thumbnails = [document.getElementById("thumbnail").value];
+  const code = document.getElementById("code").value;
+  const stock = document.getElementById("stock").value;
+  const status = document.getElementById("status").checked;
+  const category = document.getElementById("category").value;
+  const product = {
+    title,
+    description,
+    price,
+    thumbnails,
+    code,
+    stock,
+    status,
+    category,
+  };
+  console.log(product);
+  // call POST/api/products endpoint with the product object
+  fetch("/api/products", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(product),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+      if (data.status === "error") {
+        alert(data.message);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+};
