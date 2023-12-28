@@ -7,15 +7,55 @@ const productManager = new ProductManager( './data/products.json');
 
 productManager.getProducts().then(() => {});
 
-router.get("/", async (req, res) => {
-  let limit = req.query.limit;
-  const returnProducts = await productManager.getProducts();
-  if (limit) {
-    res.status(200).json({ status: "ok", data: returnProducts.slice(0, limit) });
-    
-  } else {
-    res.status(200).json({ status: "ok", data: returnProducts });
-    
+router.get('/', async (req, res) => {
+  try {
+    let { limit = 10, page = 1, sort, query } = req.query;
+    limit = parseInt(limit);
+    page = parseInt(page);
+
+    let products = await productManager.getProducts();
+
+    // Aplicar filtros según los parámetros de query
+    if (query) {
+      if (query === 'disponible') {
+        products = products.filter((product) => product.status === true);
+      } else {
+        products = products.filter((product) => product.category === query);
+      }
+    }
+
+    // Aplicar ordenamiento según el parámetro sort
+    if (sort) {
+      if (sort === 'asc') {
+        products.sort((a, b) => a.price - b.price);
+      } else if (sort === 'desc') {
+        products.sort((a, b) => b.price - a.price);
+      }
+    }
+
+    // Calcular paginación
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const totalPages = Math.ceil(products.length / limit);
+
+    const results = {};
+    if (endIndex < products.length) {
+      results.nextPage = page + 1;
+    }
+    if (startIndex > 0) {
+      results.prevPage = page - 1;
+    }
+    results.totalPages = totalPages;
+    results.page = page;
+    results.hasPrevPage = page > 1;
+    results.hasNextPage = endIndex < products.length;
+
+    // Obtener los productos para la página actual
+    results.payload = products.slice(startIndex, endIndex);
+
+    res.status(200).json({ status: 'success', ...results });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
   }
 });
 
